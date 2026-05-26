@@ -1,0 +1,58 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        service:
+          - { name: gateway, dockerfile: "src/backend/Gateway/HealthPlatform.Gateway/Dockerfile", context: "src/backend" }
+          - { name: auth, dockerfile: "src/backend/Services/Auth/HealthPlatform.Auth.Api/Dockerfile", context: "src/backend" }
+          - { name: appointment, dockerfile: "src/backend/Services/Appointment/HealthPlatform.Appointment.Api/Dockerfile", context: "src/backend" }
+          - { name: intake, dockerfile: "src/backend/Services/Intake/HealthPlatform.Intake.Api/Dockerfile", context: "src/backend" }
+          - { name: document, dockerfile: "src/backend/Services/Document/HealthPlatform.Document.Api/Dockerfile", context: "src/backend" }
+          - { name: clinical, dockerfile: "src/backend/Services/ClinicalIntelligence/HealthPlatform.ClinicalIntelligence.Api/Dockerfile", context: "src/backend" }
+          - { name: notification, dockerfile: "src/backend/Services/Notification/HealthPlatform.Notification.Api/Dockerfile", context: "src/backend" }
+          - { name: admin, dockerfile: "src/backend/Services/Admin/HealthPlatform.Admin.Api/Dockerfile", context: "src/backend" }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service.name }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service.name }}:${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Railway/Render
+        run: |
+          echo "Deploy step — configure Railway or Render webhook/CLI here"
+          echo "Image tag: ${{ github.sha }}"

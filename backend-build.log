@@ -1,0 +1,53 @@
+=== DOTNET VERSION ===
+8.0.421
+=== DOTNET RESTORE ===
+
+Welcome to .NET 8.0!
+---------------------
+SDK Version: 8.0.421
+
+Telemetry
+---------
+The .NET tools collect usage data in order to help us improve your experience. It is collected by Microsoft and shared with the community. You can opt-out of telemetry by setting the DOTNET_CLI_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+
+Read more about .NET CLI Tools telemetry: https://aka.ms/dotnet-cli-telemetry
+
+----------------
+Installed an ASP.NET Core HTTPS development certificate.
+To trust the certificate, run 'dotnet dev-certs https --trust'
+Learn about HTTPS: https://aka.ms/dotnet-https
+
+----------------
+Write your first app: https://aka.ms/dotnet-hello-world
+Find out what's new: https://aka.ms/dotnet-whats-new
+Explore documentation: https://aka.ms/dotnet-docs
+Report issues and find source on GitHub: https://github.com/dotnet/core
+Use 'dotnet --help' to see available commands or visit: https://aka.ms/dotnet-cli
+--------------------------------------------------------------------------------------
+  Determining projects to restore...
+  Restored d:\PropelIQ-Team\src\backend\Gateway\HealthPlatform.Gateway\HealthPlatform.Gateway.csproj (in 16.95 sec).
+  Restored d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\HealthPlatform.Shared.csproj (in 16.95 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Intake\HealthPlatform.Intake.Api\HealthPlatform.Intake.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Document\HealthPlatform.Document.Api\HealthPlatform.Document.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Notification\HealthPlatform.Notification.Api\HealthPlatform.Notification.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\ClinicalIntelligence\HealthPlatform.ClinicalIntelligence.Api\HealthPlatform.ClinicalIntelligence.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Admin\HealthPlatform.Admin.Api\HealthPlatform.Admin.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Auth\HealthPlatform.Auth.Api\HealthPlatform.Auth.Api.csproj (in 17.13 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\HealthPlatform.Appointment.Api.csproj (in 124 ms).
+=== DOTNET BUILD ===
+  HealthPlatform.Shared -> d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\bin\Debug\net8.0\HealthPlatform.Shared.dll
+  HealthPlatform.Admin.Api -> d:\PropelIQ-Team\src\backend\Services\Admin\HealthPlatform.Admin.Api\bin\Debug\net8.0\HealthPlatform.Admin.Api.dll
+  HealthPlatform.Gateway -> d:\PropelIQ-Team\src\backend\Gateway\HealthPlatform.Gateway\bin\Debug\net8.0\HealthPlatform.Gateway.dll
+  HealthPlatform.Intake.Api -> d:\PropelIQ-Team\src\backend\Services\Intake\HealthPlatform.Intake.Api\bin\Debug\net8.0\HealthPlatform.Intake.Api.dll
+  HealthPlatform.Document.Api -> d:\PropelIQ-Team\src\backend\Services\Document\HealthPlatform.Document.Api\bin\Debug\net8.0\HealthPlatform.Document.Api.dll
+  HealthPlatform.Notification.Api -> d:\PropelIQ-Team\src\backend\Services\Notification\HealthPlatform.Notification.Api\bin\Debug\net8.0\HealthPlatform.Notification.Api.dll
+  HealthPlatform.ClinicalIntelligence.Api -> d:\PropelIQ-Team\src\backend\Services\ClinicalIntelligence\HealthPlatform.ClinicalIntelligence.Api\bin\Debug\net8.0\HealthPlatform.ClinicalIntelligence.Api.dll
+  HealthPlatform.Appointment.Api -> d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\bin\Debug\net8.0\HealthPlatform.Appointment.Api.dll
+  HealthPlatform.Auth.Api -> d:\PropelIQ-Team\src\backend\Services\Auth\HealthPlatform.Auth.Api\bin\Debug\net8.0\HealthPlatform.Auth.Api.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:35.97
+=== DONE ===

@@ -1,0 +1,50 @@
+﻿sequenceDiagram
+    participant S as Staff
+    participant UI as Angular 17<br/>Code Review UI
+    participant GW as YARP Gateway
+    participant CS as Clinical Intelligence<br/>Service
+    participant GEMINI as Gemini API
+    participant DB as PostgreSQL
+
+    Note over S,DB: UC-009 â€” Staff Reviews and Confirms Extracted Medical Codes
+
+    S->>UI: Open medical coding for patient encounter
+    UI->>GW: GET /api/clinical/codes/{patientId}/{encounterId}
+    GW->>CS: Route (JWT, Staff role)
+    CS->>DB: Fetch aggregated clinical text for encounter
+    CS->>GEMINI: ICD-10 suggestion prompt (text + evidence requirement)
+    GEMINI-->>CS: Up to 5 ranked ICD-10 suggestions with evidence
+    CS->>GEMINI: CPT suggestion prompt (text + evidence requirement)
+    GEMINI-->>CS: Up to 5 ranked CPT suggestions with evidence
+    CS->>DB: Save MedicalCodes (status=Suggested)
+    CS-->>GW: {icd10Suggestions, cptSuggestions}
+    GW-->>UI: Suggestions with evidence snippets
+    UI-->>S: Side-by-side ICD-10 + CPT review interface
+
+    loop For each suggested code
+        S->>UI: Click "Confirm" or "Reject"
+        UI->>GW: POST /api/clinical/codes/review {codeId, action}
+        GW->>CS: Route
+        CS->>DB: Update MedicalCode (Confirmed|Rejected, staffId, timestamp)
+        CS->>DB: Insert AuditLogEntry (code review action)
+        CS-->>GW: {updated}
+        GW-->>UI: Code status updated
+        UI-->>S: Visual confirmation/rejection indicator
+    end
+
+    opt Staff adds manual code
+        S->>UI: Type ICD-10 or CPT code manually
+        UI->>GW: POST /api/clinical/codes/manual {codeType, codeValue, description}
+        GW->>CS: Route
+        CS->>DB: Validate code format
+        CS->>DB: Save MedicalCode (status=Confirmed, confidence=1.0)
+        CS->>DB: Insert AuditLogEntry
+        CS-->>GW: {saved}
+        GW-->>UI: Manual code added
+        UI-->>S: Code appears in confirmed list
+    end
+
+    alt Staff rejects a code
+        CS->>DB: Update MedicalCode (status=Rejected)
+        CS->>DB: Insert AuditLogEntry (rejection with staffId)
+    end

@@ -1,0 +1,172 @@
+﻿erDiagram
+    User {
+        uuid userId PK
+        string email UK
+        string passwordHash
+        enum role "Patient|Staff|Admin"
+        enum accountStatus "Active|Inactive|Locked"
+        datetime lastLoginAt
+        uuid createdBy FK
+        datetime createdAt
+    }
+
+    Patient {
+        uuid patientId PK
+        string email UK
+        string passwordHash
+        string fullName
+        date dateOfBirth
+        enum biologicalSex
+        string phone
+        string address
+        string insurerName
+        string memberId
+        string groupNumber
+        datetime registrationDate
+        boolean emailVerified
+        enum accountStatus
+    }
+
+    Appointment {
+        uuid appointmentId PK
+        uuid patientId FK
+        datetime slotStart
+        datetime slotEnd
+        enum status "Available|Reserved|Confirmed|Arrived|Completed|Cancelled|NoShow"
+        enum bookingType "SelfBooked|WalkIn"
+        string referenceNumber
+        uuid preferredSwapId FK "nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    PreferredSwapEntry {
+        uuid swapId PK
+        uuid appointmentId FK
+        datetime preferredSlotStart
+        datetime preferredSlotEnd
+        datetime registeredAt
+        enum status "Pending|Executed|Expired"
+    }
+
+    IntakeRecord {
+        uuid intakeId PK
+        uuid appointmentId FK
+        uuid patientId FK
+        enum mode "AI|Manual"
+        enum completionStatus
+        datetime createdAt
+        datetime updatedAt
+        datetime autoSavedAt
+    }
+
+    ClinicalDocument {
+        uuid documentId PK
+        uuid patientId FK
+        uuid uploaderUserId FK
+        enum uploaderRole
+        string fileName
+        int fileSizeBytes
+        string encryptedBlobPath
+        enum processingStatus "Queued|Processing|Completed|Failed"
+        string encounterReference "nullable"
+        datetime uploadedAt
+    }
+
+    ExtractedDataElement {
+        uuid elementId PK
+        uuid documentId FK
+        uuid patientId FK
+        enum category "Vital|Medication|Diagnosis|Allergy|Immunization|Surgery"
+        string fieldName
+        string fieldValue
+        float confidenceScore
+        int sourcePageNumber
+        enum deduplicationStatus
+        datetime createdAt
+    }
+
+    PatientView360 {
+        uuid viewId PK
+        uuid patientId FK "unique"
+        enum verificationStatus "Unverified|Verified|Complete"
+        uuid verifiedByUserId FK "nullable"
+        datetime verifiedAt
+        datetime lastAggregatedAt
+    }
+
+    DataConflict {
+        uuid conflictId PK
+        uuid viewId FK
+        string fieldName
+        string valueA
+        uuid sourceDocumentA FK
+        string valueB
+        uuid sourceDocumentB FK
+        enum severity "Critical|Warning"
+        enum resolutionStatus "Open|Resolved|Acknowledged"
+        uuid resolvedByUserId FK "nullable"
+        datetime resolvedAt
+    }
+
+    MedicalCode {
+        uuid codeId PK
+        uuid patientId FK
+        string encounterId
+        enum codeType "ICD10|CPT"
+        string codeValue
+        string codeDescription
+        text supportingEvidence
+        float confidenceScore
+        enum status "Suggested|Confirmed|Rejected"
+        uuid confirmedByUserId FK "nullable"
+        datetime confirmedAt
+        datetime createdAt
+    }
+
+    AuditLogEntry {
+        uuid logId PK
+        uuid userId FK
+        string userRole
+        uuid patientRecordId
+        enum actionType "View|Create|Update|Delete"
+        string resourceType
+        uuid resourceId
+        jsonb beforeState "nullable"
+        jsonb afterState "nullable"
+        string ipAddress
+        datetime timestampUtc
+    }
+
+    NotificationEvent {
+        uuid eventId PK
+        uuid appointmentId FK
+        enum channel "Email|SMS"
+        enum status "Sent|Failed|Retried"
+        string triggerSource "System|StaffId"
+        datetime sentAt
+        datetime failedAt
+        int retryCount
+    }
+
+    InsuranceDummyRecord {
+        uuid recordId PK
+        string insurerName
+        string memberIdPattern
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    User ||--o| Patient : "1:1 (Patient role)"
+    User ||--o{ AuditLogEntry : "performs"
+    Patient ||--o{ Appointment : "books"
+    Patient ||--o{ ClinicalDocument : "uploads"
+    Patient ||--|| PatientView360 : "has"
+    Patient ||--o{ IntakeRecord : "completes"
+    Appointment ||--o| PreferredSwapEntry : "may have"
+    Appointment ||--o{ NotificationEvent : "triggers"
+    IntakeRecord }o--|| Appointment : "for"
+    ClinicalDocument ||--o{ ExtractedDataElement : "yields"
+    PatientView360 ||--o{ DataConflict : "contains"
+    Patient ||--o{ MedicalCode : "has"
+    Patient ||--o{ ExtractedDataElement : "associated"

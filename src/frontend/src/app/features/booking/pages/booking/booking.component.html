@@ -1,0 +1,27 @@
+<div class="booking-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Book an Appointment</mat-card-title>
+      <mat-button-toggle-group [(value)]="viewMode" class="view-toggle">
+        <mat-button-toggle value="day">Day</mat-button-toggle>
+        <mat-button-toggle value="week">Week</mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-slot-filter (filterChanged)="onFilterChanged($event)"></app-slot-filter>
+
+      @if (loading) {
+        <div class="loading-spinner">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else {
+        <app-slot-grid
+          [slotGroups]="slotGroups"
+          [selectedSlotId]="selectedSlot?.id ?? null"
+          (slotSelected)="onSlotSelected($event)">
+        </app-slot-grid>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

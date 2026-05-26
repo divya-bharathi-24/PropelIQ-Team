@@ -1,0 +1,50 @@
+﻿sequenceDiagram
+    participant SCHED as Hangfire Scheduler
+    participant NOTIF as Notification Service
+    participant DB as PostgreSQL
+    participant SG as SendGrid
+    participant S as Staff
+    participant UI as Angular 17<br/>Staff Dashboard
+    participant GW as YARP Gateway
+
+    Note over SCHED,GW: UC-011 â€” System Sends Appointment Reminders
+
+    Note right of SCHED: Automated reminder flow (48h, 24h, 2h intervals)
+    SCHED->>DB: Query upcoming confirmed appointments matching reminder interval
+    SCHED->>NOTIF: Trigger reminder batch
+
+    loop For each eligible appointment
+        NOTIF->>DB: Fetch patient contact details
+        NOTIF->>SG: Send email reminder (appointment details)
+        SG-->>NOTIF: Delivery status
+        NOTIF->>SG: Send SMS reminder (appointment details)
+        SG-->>NOTIF: Delivery status
+        NOTIF->>DB: Insert NotificationEvent (channel=Email, status=Sent)
+        NOTIF->>DB: Insert NotificationEvent (channel=SMS, status=Sent)
+    end
+
+    Note right of S: Manual ad-hoc reminder flow
+    S->>UI: Open appointment detail, click "Send Reminder Now"
+    UI->>GW: POST /api/notifications/remind {appointmentId}
+    GW->>NOTIF: Route (JWT, Staff role)
+    NOTIF->>DB: Fetch patient contact + appointment details
+    NOTIF->>SG: Send email (immediate)
+    NOTIF->>SG: Send SMS (immediate)
+    NOTIF->>DB: Insert NotificationEvent (triggerSource=StaffId)
+    NOTIF-->>GW: {sent}
+    GW-->>UI: Reminder sent confirmation
+    UI-->>S: "Reminder sent successfully"
+
+    alt SMS delivery fails
+        SG-->>NOTIF: Delivery failed
+        NOTIF->>DB: Insert NotificationEvent (status=Failed)
+        NOTIF->>NOTIF: Wait 5 minutes
+        NOTIF->>SG: Retry SMS
+        NOTIF->>DB: Update NotificationEvent (status=Retried)
+    end
+
+    alt Appointment cancelled before reminder
+        SCHED->>DB: Check appointment status
+        Note right of SCHED: Status=Cancelled â†’ suppress reminder
+        SCHED->>DB: Log suppression event
+    end

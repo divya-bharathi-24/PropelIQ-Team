@@ -1,0 +1,63 @@
+﻿graph TB
+    subgraph "Client Layer"
+        FE["Angular 17 SPA<br/>(Standalone Components)"]
+    end
+
+    subgraph "API Gateway"
+        GW["YARP API Gateway<br/>(.NET 8)<br/>JWT + RBAC + Rate Limit"]
+    end
+
+    subgraph "Microservices Layer"
+        AUTH["Auth Service<br/>(Domain A)<br/>Identity + JWT + Sessions"]
+        APPT["Appointment Service<br/>(Domains C, E, F)<br/>Booking + Swap + Walk-in + Queue"]
+        INTAKE["Intake Service<br/>(Domain D)<br/>AI Chat + Manual Form"]
+        DOC["Document Service<br/>(Domain K)<br/>Upload + Encryption + OCR"]
+        CLINICAL["Clinical Intelligence Service<br/>(Domains L, M, N)<br/>Extraction + Coding + Conflicts"]
+        NOTIF["Notification Service<br/>(Domains G, H)<br/>Reminders + Risk Scoring"]
+        ADMIN["Admin & Audit Service<br/>(Domains O, P)<br/>User Mgmt + Audit Logs"]
+    end
+
+    subgraph "Data Layer"
+        PG["PostgreSQL 16<br/>(Schema-per-Service)"]
+        REDIS["Upstash Redis<br/>(Cache + CQRS Reads)"]
+    end
+
+    subgraph "External Services"
+        GEMINI["Google Gemini API<br/>(gemini-1.5-flash)"]
+        SENDGRID["SendGrid<br/>(Email)"]
+        CALENDAR["Calendar APIs<br/>(Google / Outlook)"]
+    end
+
+    subgraph "Background Processing"
+        HF["Hangfire<br/>(PostgreSQL Storage)<br/>OCR + Extraction + Risk + Outbox"]
+    end
+
+    FE -->|"HTTPS/REST + JWT"| GW
+    GW --> AUTH
+    GW --> APPT
+    GW --> INTAKE
+    GW --> DOC
+    GW --> CLINICAL
+    GW --> NOTIF
+    GW --> ADMIN
+
+    AUTH --> PG
+    APPT --> PG
+    APPT --> REDIS
+    INTAKE --> PG
+    INTAKE --> GEMINI
+    DOC --> PG
+    CLINICAL --> PG
+    CLINICAL --> REDIS
+    CLINICAL --> GEMINI
+    NOTIF --> PG
+    NOTIF --> SENDGRID
+    ADMIN --> PG
+
+    HF --> PG
+    HF --> GEMINI
+
+    APPT -.->|"Outbox Events"| NOTIF
+    DOC -.->|"Outbox Events"| CLINICAL
+    CLINICAL -.->|"CQRS Read Model"| REDIS
+    APPT -.->|"Calendar Sync"| CALENDAR

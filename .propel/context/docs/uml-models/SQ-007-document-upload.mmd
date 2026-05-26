@@ -1,0 +1,47 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17<br/>Document Upload UI
+    participant GW as YARP Gateway
+    participant DOC as Document Service
+    participant DB as PostgreSQL
+    participant HF as Hangfire Worker
+
+    Note over P,HF: UC-007 â€” Patient Uploads Clinical Documents
+
+    P->>UI: Navigate to document upload section
+    P->>UI: Select PDF files (up to 20, max 25MB each)
+    UI->>UI: Client-side validation (PDF type, size check)
+
+    loop For each selected file
+        UI->>GW: POST /api/documents/upload {file, patientId}
+        GW->>DOC: Route (JWT, Patient role)
+        DOC->>DOC: Validate file type (PDF only) and size (â‰¤25MB)
+        DOC->>DOC: Encrypt file content (AES-256-GCM)
+        DOC->>DB: Store encrypted blob + ClinicalDocument metadata
+        DOC->>DB: Set processingStatus=Queued
+        DOC->>DB: Insert AuditLogEntry (upload event)
+        DOC->>DB: Enqueue Hangfire job (document processing)
+        DOC-->>GW: {documentId, status: Queued}
+        GW-->>UI: Upload success for file
+    end
+
+    UI-->>P: Upload history updated (all files shown with status)
+
+    Note right of HF: Background: Clinical Intelligence Engine picks up queued documents
+
+    alt File exceeds 25MB
+        DOC-->>GW: {error: file_too_large, maxSize: 25MB}
+        GW-->>UI: Error for oversized file
+        UI-->>P: "File exceeds 25MB limit â€” skipped"
+        Note right of UI: Other valid files continue uploading
+    end
+
+    alt Non-PDF file selected
+        UI->>UI: Client-side rejection
+        UI-->>P: "Only PDF files are supported"
+    end
+
+    opt Processing delayed
+        Note right of P: Dashboard shows "Processing" status
+        Note right of HF: Email sent when extraction completes
+    end

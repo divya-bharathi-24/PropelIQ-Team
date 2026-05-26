@@ -1,0 +1,61 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Sign In</h1>
+    <p class="subtitle">Welcome to Health Platform</p>
+
+    @if (errorMessage) {
+      <div class="error-banner" role="alert">
+        {{ errorMessage }}
+        @if (lockoutSeconds > 0) {
+          <div class="retry-timer">Try again in {{ lockoutMinutes }}</div>
+        }
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="email">
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Invalid email format</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password"
+               [type]="hidePassword ? 'password' : 'text'"
+               autocomplete="current-password">
+        <button mat-icon-button matSuffix type="button"
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <mat-error>Password is required</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="form-options">
+        <mat-checkbox formControlName="rememberMe" color="primary">Remember me</mat-checkbox>
+        <a routerLink="/auth/forgot-password" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="loading || lockoutSeconds > 0" class="submit-btn">
+        @if (loading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <p class="register-link">
+      Don't have an account? <a routerLink="/auth/register">Create one</a>
+    </p>
+  </div>
+</div>

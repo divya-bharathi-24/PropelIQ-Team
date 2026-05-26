@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "nHSun4MGNiU04RuzZpiIv/DjSoARAUg0qXv+RrnDhyg=",
+  "Source": "HealthPlatform.Appointment.Api",
+  "BasePath": "_content/HealthPlatform.Appointment.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

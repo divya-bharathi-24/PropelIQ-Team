@@ -1,0 +1,97 @@
+﻿@startuml DM-003-data-flow
+!theme plain
+skinparam backgroundColor #FEFEFE
+
+left to right direction
+
+actor "Patient" as PAT
+actor "Staff" as STAFF
+actor "Admin" as ADM
+
+rectangle "Angular 17 Frontend" as FE {
+    (Booking UI) as BOOK_UI
+    (Intake Chat / Form) as INTAKE_UI
+    (Document Upload) as DOC_UI
+    (360Â° View) as VIEW_UI
+    (Code Review) as CODE_UI
+    (Admin Panel) as ADMIN_UI
+}
+
+rectangle "YARP API Gateway" as GW {
+    (JWT Validation\n+ RBAC) as AUTH_GW
+}
+
+rectangle "Backend Services" as BE {
+    rectangle "Auth Service" as AUTH_SVC {
+        (Register / Login) as AUTH_OP
+        (Session Mgmt) as SESSION
+    }
+    rectangle "Appointment Service" as APPT_SVC {
+        (Slot Management) as SLOT
+        (Booking Engine) as BOOKING
+        (Swap Monitor) as SWAP
+        (Walk-in Queue) as WALKIN
+    }
+    rectangle "Intake Service" as INTAKE_SVC {
+        (AI Conversational\nFlow) as AI_INTAKE
+        (Manual Form\nHandler) as MANUAL_INTAKE
+    }
+    rectangle "Document Service" as DOC_SVC {
+        (Upload + Encrypt) as UPLOAD
+        (OCR Preprocessing) as OCR
+    }
+    rectangle "Clinical Intelligence" as CLIN_SVC {
+        (Data Extraction) as EXTRACT
+        (De-duplication) as DEDUP
+        (Conflict Detection) as CONFLICT
+        (ICD-10/CPT\nSuggestion) as CODING
+        (360Â° Aggregation) as AGGREGATE
+    }
+    rectangle "Notification Service" as NOTIF_SVC {
+        (Reminder Scheduler) as REMINDER
+        (No-Show Risk\nScoring) as RISK
+    }
+}
+
+database "PostgreSQL" as PG
+database "Upstash Redis" as REDIS
+cloud "Gemini API" as GEMINI
+cloud "SendGrid" as SG
+cloud "Calendar APIs" as CAL
+
+PAT --> BOOK_UI
+PAT --> INTAKE_UI
+PAT --> DOC_UI
+STAFF --> VIEW_UI
+STAFF --> CODE_UI
+ADM --> ADMIN_UI
+
+FE --> AUTH_GW
+AUTH_GW --> AUTH_SVC
+AUTH_GW --> APPT_SVC
+AUTH_GW --> INTAKE_SVC
+AUTH_GW --> DOC_SVC
+AUTH_GW --> CLIN_SVC
+AUTH_GW --> NOTIF_SVC
+
+AUTH_OP --> PG : "User Credentials"
+SESSION --> REDIS : "Session Tokens"
+BOOKING --> PG : "Appointment Records"
+SLOT --> REDIS : "Slot Cache"
+SWAP --> PG : "Waitlist Queue"
+AI_INTAKE --> GEMINI : "NLU Prompts"
+AI_INTAKE --> PG : "Intake Records"
+MANUAL_INTAKE --> PG : "Intake Records"
+UPLOAD --> PG : "Encrypted Docs\n(AES-256)"
+OCR --> GEMINI : "Text for Extraction"
+EXTRACT --> PG : "ExtractedDataElements"
+DEDUP --> PG : "Merged Elements"
+CONFLICT --> PG : "DataConflicts"
+CODING --> GEMINI : "Clinical Text"
+CODING --> PG : "MedicalCodes"
+AGGREGATE --> REDIS : "360Â° Read Model"
+REMINDER --> SG : "Email + SMS"
+REMINDER --> PG : "NotificationEvents"
+RISK --> PG : "Risk Scores"
+BOOKING --> CAL : "ICS / OAuth Events"
+@enduml

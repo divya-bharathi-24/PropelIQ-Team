@@ -1,0 +1,89 @@
+﻿@startuml DM-002-deployment-architecture
+!theme plain
+left to right direction
+skinparam backgroundColor #FEFEFE
+skinparam nodeBackgroundColor #E8F4FD
+skinparam databaseBackgroundColor #FFF3E0
+skinparam cloudBackgroundColor #F3E5F5
+
+cloud "CDN (Netlify/Vercel)" as CDN {
+    node "Static Hosting\n(Free Tier)" as STATIC {
+        artifact "Angular 17 SPA\n(Standalone Components)" as SPA
+    }
+}
+
+cloud "Container Platform\n(Railway/Render Free Tier)" as CONTAINERS {
+    node "API Gateway Container\n(512 MB RAM)" as GW_NODE {
+        artifact "YARP Gateway\n(.NET 8)" as GW
+    }
+    node "Auth Container" as AUTH_NODE {
+        artifact "Auth Service\n(.NET 8)" as AUTH
+    }
+    node "Appointment Container" as APPT_NODE {
+        artifact "Appointment Service\n(.NET 8)" as APPT
+        artifact "Hangfire Worker" as HF_APPT
+    }
+    node "Intake Container" as INTAKE_NODE {
+        artifact "Intake Service\n(.NET 8)" as INTAKE
+    }
+    node "Document Container" as DOC_NODE {
+        artifact "Document Service\n(.NET 8)" as DOC
+        artifact "Hangfire Worker\n(OCR + Extraction)" as HF_DOC
+    }
+    node "Clinical Intelligence Container" as CLIN_NODE {
+        artifact "Clinical Intelligence\nService (.NET 8)" as CLIN
+    }
+    node "Notification Container" as NOTIF_NODE {
+        artifact "Notification Service\n(.NET 8)" as NOTIF
+        artifact "Hangfire Worker\n(Reminders + Risk)" as HF_NOTIF
+    }
+    node "Admin Container" as ADMIN_NODE {
+        artifact "Admin & Audit\nService (.NET 8)" as ADMIN
+    }
+}
+
+database "PostgreSQL 16\n(Railway/Render Add-on)\nSchema-per-Service" as PG
+
+cloud "Upstash" as UPSTASH {
+    database "Redis\n(Serverless Free Tier)\nCache + CQRS Reads" as REDIS
+}
+
+cloud "Google Cloud" as GCLOUD {
+    node "Gemini API\n(Free Tier: 15 RPM)" as GEMINI
+}
+
+cloud "SendGrid" as SG {
+    node "Email API\n(Free: 100/day)" as EMAIL
+}
+
+cloud "Calendar Providers" as CALPROV {
+    node "Google Calendar API\nOutlook Calendar API" as CALAPI
+}
+
+SPA -down-> GW : "HTTPS\nTLS 1.2+"
+GW -down-> AUTH
+GW -down-> APPT
+GW -down-> INTAKE
+GW -down-> DOC
+GW -down-> CLIN
+GW -down-> NOTIF
+GW -down-> ADMIN
+
+AUTH --> PG
+APPT --> PG
+INTAKE --> PG
+DOC --> PG
+CLIN --> PG
+NOTIF --> PG
+ADMIN --> PG
+
+APPT --> REDIS
+CLIN --> REDIS
+
+INTAKE --> GEMINI
+HF_DOC --> GEMINI
+CLIN --> GEMINI
+
+NOTIF --> EMAIL
+APPT --> CALAPI
+@enduml

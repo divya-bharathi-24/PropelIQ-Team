@@ -1,0 +1,218 @@
+
+> health-platform-frontend@0.0.1 build
+> ng build
+
+- Building...
+
+Application bundle generation failed. [7.263 seconds]
+
+X [ERROR] Could not resolve "@angular/common"
+
+    node_modules/@angular/animations/fesm2022/animations.mjs:7:25:
+      7 │ import { DOCUMENT } from '@angular/common';
+        ╵                          ~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/common.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:29:17:
+      29 │       "default": "./fesm2022/common.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/core/primitives/signals"
+
+    node_modules/@angular/core/fesm2022/core.mjs:7:681:
+      7 │ ...teWatch as createWatch$1 } from '@angular/core/primitives/signals';
+        ╵                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/primitives/signals.mjs" was not found on the file system:
+
+    node_modules/@angular/core/package.json:27:17:
+      27 │       "default": "./fesm2022/primitives/signals.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/core/primitives/signals" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/common"
+
+    node_modules/@angular/platform-browser/fesm2022/animations/async.mjs:7:25:
+      7 │ import { DOCUMENT } from '@angular/common';
+        ╵                          ~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/common.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:29:17:
+      29 │       "default": "./fesm2022/common.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/common"
+
+    node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs:9:157:
+      9 │ ...FORM_BROWSER_ID, XhrFactory, CommonModule } from '@angular/common';
+        ╵                                                     ~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/common.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:29:17:
+      29 │       "default": "./fesm2022/common.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/common/http"
+
+    node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs:11:40:
+      11 │ import { ɵwithHttpTransferCache } from '@angular/common/http';
+         ╵                                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/http.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:35:17:
+      35 │       "default": "./fesm2022/http.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common/http" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/common"
+
+    node_modules/@angular/router/fesm2022/router.mjs:10:20:
+      10 │ import * as i3 from '@angular/common';
+         ╵                     ~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/common.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:29:17:
+      29 │       "default": "./fesm2022/common.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] Could not resolve "@angular/common"
+
+    node_modules/@angular/service-worker/fesm2022/service-worker.mjs:9:34:
+      9 │ import { isPlatformBrowser } from '@angular/common';
+        ╵                                   ~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/common.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:29:17:
+      29 │       "default": "./fesm2022/common.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/admin/admin-shell.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/admin/dashboard/admin-dashboard.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/app.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS6133: 'isDevMode' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/app.config.ts:4:2:
+      4 │   isDevMode,
+        ╵   ~~~~~~~~~
+
+
+X [ERROR] Could not resolve "@angular/common/http"
+
+    src/app/app.config.ts:4:58:
+      4 │ ...deHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+        ╵                                                ~~~~~~~~~~~~~~~~~~~~~~
+
+  The module "./fesm2022/http.mjs" was not found on the file system:
+
+    node_modules/@angular/common/package.json:35:17:
+      35 │       "default": "./fesm2022/http.mjs"
+         ╵                  ~~~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path "@angular/common/http" as external to exclude it from the bundle, which will remove this error and leave the unresolved path in the bundle.
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/app.config.ts:5:7:
+      5 │ } from '@angular/core';
+        ╵        ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS2307: Cannot find module '@angular/common/http' or its corresponding type declarations. [plugin angular-compiler]
+
+    src/app/app.config.ts:8:58:
+      8 │ ...deHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+        ╵                                                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/patient/dashboard/patient-dashboard.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/patient/patient-shell.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/staff/dashboard/staff-dashboard.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS7016: Could not find a declaration file for module '@angular/core'. 'd:/PropelIQ-Team/src/frontend/node_modules/@angular/core/fesm2022/core.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/angular__core` if it exists or add a new declaration (.d.ts) file containing `declare module '@angular/core';` [plugin angular-compiler]
+
+    src/app/staff/staff-shell.component.ts:1:26:
+      1 │ import { Component } from '@angular/core';
+        ╵                           ~~~~~~~~~~~~~~~
+
+
+X [ERROR] Can't find stylesheet to import.
+  ╷
+1 │ @use '@angular/material' as mat;
+  │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ╵
+  src\styles.scss 1:1  root stylesheet [plugin angular-sass]
+
+    angular:styles/global:styles:1:8:
+      1 │ @import 'src/styles.scss';
+        ╵         ~~~~~~~~~~~~~~~~~
+
+

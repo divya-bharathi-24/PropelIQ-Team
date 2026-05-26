@@ -1,0 +1,61 @@
+<div class="swap-panel" [class.open]="opened">
+  <div class="panel-header">
+    <h3>Request Slot Swap</h3>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  @if (!swapResult) {
+    <form [formGroup]="swapForm" (ngSubmit)="submitRequest()" class="swap-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Preferred Date</mat-label>
+        <input matInput type="date" formControlName="preferredDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Preferred Time Start</mat-label>
+        <input matInput type="time" formControlName="preferredTimeStart" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Preferred Time End</mat-label>
+        <input matInput type="time" formControlName="preferredTimeEnd" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="swapForm.invalid || submitting">
+        @if (submitting) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Request Swap
+        }
+      </button>
+    </form>
+  } @else {
+    <div class="swap-status">
+      <p>Queue Position: <strong>{{ swapResult.queuePosition }}</strong></p>
+
+      @if (matchedExpiresAt) {
+        <h4>Slot Available!</h4>
+        <app-swap-countdown
+          [expiresAt]="matchedExpiresAt"
+          (expired)="onCountdownExpired()">
+        </app-swap-countdown>
+        <div class="swap-actions">
+          <button mat-button (click)="declineSwap()">Decline</button>
+          <button mat-raised-button color="primary" (click)="acceptSwap()" [disabled]="accepting">
+            @if (accepting) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              Accept Swap
+            }
+          </button>
+        </div>
+      } @else {
+        <p class="waiting">Waiting for preferred slot to become available...</p>
+        <button mat-stroked-button (click)="declineSwap()">Cancel Request</button>
+      }
+    </div>
+  }
+</div>

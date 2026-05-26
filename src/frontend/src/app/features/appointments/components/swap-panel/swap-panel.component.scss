@@ -1,0 +1,50 @@
+.swap-panel {
+  position: fixed;
+  right: -400px;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+
+  &.open { right: 0; }
+
+  @media (max-width: 599px) {
+    width: 100vw;
+    right: -100vw;
+    &.open { right: 0; }
+  }
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h3 { margin: 0; }
+}
+
+.swap-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.swap-status { padding: 16px 0; }
+
+.swap-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.waiting {
+  color: #666;
+  font-style: italic;
+}

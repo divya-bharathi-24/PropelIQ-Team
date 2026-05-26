@@ -1,0 +1,25 @@
+=== DOTNET RESTORE ===
+  Determining projects to restore...
+  Restored d:\PropelIQ-Team\src\backend\Services\Notification\HealthPlatform.Notification.Api\HealthPlatform.Notification.Api.csproj (in 3.78 sec).
+  Restored d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\HealthPlatform.Appointment.Api.csproj (in 7.35 sec).
+  7 of 9 projects are up-to-date for restore.
+=== DOTNET BUILD ===
+  HealthPlatform.Shared -> d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\bin\Debug\net8.0\HealthPlatform.Shared.dll
+  HealthPlatform.Document.Api -> d:\PropelIQ-Team\src\backend\Services\Document\HealthPlatform.Document.Api\bin\Debug\net8.0\HealthPlatform.Document.Api.dll
+  HealthPlatform.Intake.Api -> d:\PropelIQ-Team\src\backend\Services\Intake\HealthPlatform.Intake.Api\bin\Debug\net8.0\HealthPlatform.Intake.Api.dll
+  HealthPlatform.Admin.Api -> d:\PropelIQ-Team\src\backend\Services\Admin\HealthPlatform.Admin.Api\bin\Debug\net8.0\HealthPlatform.Admin.Api.dll
+  HealthPlatform.Gateway -> d:\PropelIQ-Team\src\backend\Gateway\HealthPlatform.Gateway\bin\Debug\net8.0\HealthPlatform.Gateway.dll
+  HealthPlatform.Auth.Api -> d:\PropelIQ-Team\src\backend\Services\Auth\HealthPlatform.Auth.Api\bin\Debug\net8.0\HealthPlatform.Auth.Api.dll
+  HealthPlatform.ClinicalIntelligence.Api -> d:\PropelIQ-Team\src\backend\Services\ClinicalIntelligence\HealthPlatform.ClinicalIntelligence.Api\bin\Debug\net8.0\HealthPlatform.ClinicalIntelligence.Api.dll
+d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\Services\CalendarSyncService.cs(43,31): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread. [d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\HealthPlatform.Appointment.Api.csproj]
+  HealthPlatform.Notification.Api -> d:\PropelIQ-Team\src\backend\Services\Notification\HealthPlatform.Notification.Api\bin\Debug\net8.0\HealthPlatform.Notification.Api.dll
+  HealthPlatform.Appointment.Api -> d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\bin\Debug\net8.0\HealthPlatform.Appointment.Api.dll
+
+Build succeeded.
+
+d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\Services\CalendarSyncService.cs(43,31): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread. [d:\PropelIQ-Team\src\backend\Services\Appointment\HealthPlatform.Appointment.Api\HealthPlatform.Appointment.Api.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:12.43
+=== DONE ===

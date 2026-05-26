@@ -1,0 +1,167 @@
+{
+  "configVersion": 1,
+  "timestamp": 1779056736571,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/chunk-234DIDAZ.js",
+        "/chunk-2HK7AL25.js",
+        "/chunk-35PI25VP.js",
+        "/chunk-35WT4EUD.js",
+        "/chunk-4MY5SIIR.js",
+        "/chunk-6TIVCXED.js",
+        "/chunk-76XAISJ2.js",
+        "/chunk-7IO57NIU.js",
+        "/chunk-7L2PU6ZZ.js",
+        "/chunk-AJY3NLBX.js",
+        "/chunk-AV5GQFV7.js",
+        "/chunk-AVWNJBCV.js",
+        "/chunk-BBETVSFT.js",
+        "/chunk-CARY4E7O.js",
+        "/chunk-CCTWNVU6.js",
+        "/chunk-DZUQQLSX.js",
+        "/chunk-ESCU4Y4H.js",
+        "/chunk-GAZYCZFP.js",
+        "/chunk-IGAKNL2Z.js",
+        "/chunk-JJTVQ4GK.js",
+        "/chunk-KML2D5KB.js",
+        "/chunk-KTLMVWG4.js",
+        "/chunk-LGZ7A7ZW.js",
+        "/chunk-LSN6G5RP.js",
+        "/chunk-MGAIEV2W.js",
+        "/chunk-MWX2VTEU.js",
+        "/chunk-NAY6GVS5.js",
+        "/chunk-O72BNYVX.js",
+        "/chunk-OB3M7KK6.js",
+        "/chunk-OGOROLSA.js",
+        "/chunk-OOKYNXWZ.js",
+        "/chunk-PIET774T.js",
+        "/chunk-PKVFJEIF.js",
+        "/chunk-PVOQA2GK.js",
+        "/chunk-QJV7SUPJ.js",
+        "/chunk-QLGNA3VL.js",
+        "/chunk-RDVTVZWM.js",
+        "/chunk-RSAEF456.js",
+        "/chunk-SCJXBVLU.js",
+        "/chunk-TIULYPJL.js",
+        "/chunk-US4KYZRA.js",
+        "/chunk-XX6FMOUW.js",
+        "/chunk-YACIXP4A.js",
+        "/chunk-YQXMW24Y.js",
+        "/chunk-YUUL4Z6J.js",
+        "/chunk-ZDB7IZRP.js",
+        "/chunk-ZJYGRJVN.js",
+        "/index.html",
+        "/main-VILAN5I7.js",
+        "/polyfills-FFHMD2TL.js",
+        "/styles-6O24AHTG.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-performance",
+      "patterns": [
+        "\\/api\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 300000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/chunk-234DIDAZ.js": "45bac41116b111dd391a071230543a5ec17af7ef",
+    "/chunk-2HK7AL25.js": "e2690d593b7c8a06792e3ba698453d1c496c0601",
+    "/chunk-35PI25VP.js": "954b4bf8780b6c8d5e5f27a66127bb5e575b53dd",
+    "/chunk-35WT4EUD.js": "27b1e7c8223e80f413de9f1270bd4bf9c078a622",
+    "/chunk-4MY5SIIR.js": "098d40d793cbc8564c65b5c2146d045b88b7799c",
+    "/chunk-6TIVCXED.js": "856519b3868db18b40b67851fd94ffc6660ed520",
+    "/chunk-76XAISJ2.js": "a66627e625eb1c1f6a69f4111d4e994cff1cf8c0",
+    "/chunk-7IO57NIU.js": "d4dfa3db0467e5835ab755c6783113b7669fd2a3",
+    "/chunk-7L2PU6ZZ.js": "3f991d53e0d6bd2e16ce1ab65c13dc720af1e347",
+    "/chunk-AJY3NLBX.js": "5a062ef6508ad39efd93deec17ef07183f698c7d",
+    "/chunk-AV5GQFV7.js": "146c79550961b41997c7c5ab15e9e8db7bcd6e72",
+    "/chunk-AVWNJBCV.js": "9d306709157b2c3e525b8bccc8c4ed19df3eb6b3",
+    "/chunk-BBETVSFT.js": "edafc4f480cd15f59b48bbb5075797c36f2309ff",
+    "/chunk-CARY4E7O.js": "b328bb848b75e0a2dd9557efaacf5f5ee1ad8e9b",
+    "/chunk-CCTWNVU6.js": "08b8536fe2cb75f9c36a6b14303eeb77640170ab",
+    "/chunk-DZUQQLSX.js": "ac7a0ff9eb5ac5a4c6d96999e91803f7b04a2e30",
+    "/chunk-ESCU4Y4H.js": "d36428882a69407db95d998372243f6b9485f119",
+    "/chunk-GAZYCZFP.js": "247aa35a8e4f5b5d842769348ae1fe8b1ac0f299",
+    "/chunk-IGAKNL2Z.js": "7f11c7b13405b25d091816b428b64f68a72cca2b",
+    "/chunk-JJTVQ4GK.js": "54d70714a7abbb0b06abc3c7390379aada3bb0f0",
+    "/chunk-KML2D5KB.js": "7424929558fc2252dde53300d09ed2ddd8b82075",
+    "/chunk-KTLMVWG4.js": "8a3ed52168906e26b75c05351d9258028f5dbbb3",
+    "/chunk-LGZ7A7ZW.js": "12478c3c3a3563c122eff4a7a3a14bc001c67ea5",
+    "/chunk-LSN6G5RP.js": "ae5eca8c0036938f238a35b3cbcd59acb8890195",
+    "/chunk-MGAIEV2W.js": "f2de088f7830f217af5922e14c67a0320ce8d885",
+    "/chunk-MWX2VTEU.js": "e6d02576987cf49eea75fa4daefcb32a1a886274",
+    "/chunk-NAY6GVS5.js": "4de9c62b3627c62fcb7d2f752e509fd7249270ce",
+    "/chunk-O72BNYVX.js": "348d7519a33a161a864223a67c821fee8295e786",
+    "/chunk-OB3M7KK6.js": "fd6ba081b231e91bae2dc6a1128ec391271e76a4",
+    "/chunk-OGOROLSA.js": "a00b15a458e0b2b4566ea2c8fe6813851342145d",
+    "/chunk-OOKYNXWZ.js": "b750af6641078a35b44f402ff025382808ad14b2",
+    "/chunk-PIET774T.js": "b1087fb902adbe6666dadf6c48b9478e7d46f08d",
+    "/chunk-PKVFJEIF.js": "3ca92a2d2823f5c6ab5ecd9d1ad1c03c5e485e76",
+    "/chunk-PVOQA2GK.js": "05ba3bb6196dbaebd02c27579253abb131fa58aa",
+    "/chunk-QJV7SUPJ.js": "af0dfdd48c98a650612223d20867d5aaa638aa5e",
+    "/chunk-QLGNA3VL.js": "cb64ed8e3e888deda801b44555bc32bb1cd3bf8e",
+    "/chunk-RDVTVZWM.js": "a84fa82c22b3d361222ab98e1de19150c4a206ab",
+    "/chunk-RSAEF456.js": "a062d82b59ae714315a57e8de30098c50ab91649",
+    "/chunk-SCJXBVLU.js": "976a339761f3f0137e461201fc0434967d2b85e5",
+    "/chunk-TIULYPJL.js": "330a36fea5a501ac512b2ad547ab4a587be6b338",
+    "/chunk-US4KYZRA.js": "cdaab3a203030d25066663434d7defa7ca1b7f39",
+    "/chunk-XX6FMOUW.js": "98c11d8d3899f23f4cafb0414d6ec5257d2efe3a",
+    "/chunk-YACIXP4A.js": "d16000e6e62bf2f8ae4a92a94461f9a38f02f4a3",
+    "/chunk-YQXMW24Y.js": "8220549137cb2a6af2c2cd96e0e179000676b171",
+    "/chunk-YUUL4Z6J.js": "85315084b77f74d41e234754ee2c3e7a70e894b9",
+    "/chunk-ZDB7IZRP.js": "8cbc5a3405a5958f552caa993c20c9fead915c0b",
+    "/chunk-ZJYGRJVN.js": "487d58371c6d727027a5739b9114be6b0e76128b",
+    "/index.html": "d2d03c99e31d3e724a1585d09b555989466185c7",
+    "/main-VILAN5I7.js": "8e238ebd32160985b9c7e13627003853ef08fa76",
+    "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/styles-6O24AHTG.css": "5d851da5264e40b7d29813323374f38ede8c4816"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

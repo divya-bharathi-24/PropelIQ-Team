@@ -1,0 +1,57 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17<br/>Intake Chat UI
+    participant GW as YARP Gateway
+    participant IS as Intake Service
+    participant GEMINI as Gemini API
+    participant DB as PostgreSQL
+
+    Note over P,DB: UC-002 â€” Patient Completes AI-Assisted Conversational Intake
+
+    P->>UI: Open intake, select "AI-Assisted" mode
+    UI->>GW: POST /api/intake/start {appointmentId, mode: AI}
+    GW->>IS: Route (JWT, Patient role)
+    IS->>DB: Create IntakeRecord (mode=AI, status=InProgress)
+    IS->>GEMINI: Opening prompt with field schema
+    GEMINI-->>IS: First question JSON
+    IS-->>GW: {question, sessionId}
+    GW-->>UI: Display opening question
+    UI-->>P: Chat question displayed
+
+    loop Intake Q&A loop
+        P->>UI: Enter free-text response
+        UI->>GW: POST /api/intake/respond {sessionId, text}
+        GW->>IS: Route
+        IS->>GEMINI: Parse response + generate next question
+        GEMINI-->>IS: Extracted fields + next question + confidence
+        IS->>DB: Autosave intake fields
+        IS-->>GW: {parsedFields, nextQuestion}
+        GW-->>UI: Live preview + next question
+        UI-->>P: Show auto-populated fields + next question
+    end
+
+    P->>UI: Review all fields, click Submit
+    UI->>GW: POST /api/intake/submit {sessionId}
+    GW->>IS: Route
+    IS->>DB: Validate required fields, mark intake Complete
+    IS-->>GW: {success, intakeId}
+    GW-->>UI: Confirmation
+    UI-->>P: "Intake submitted successfully"
+
+    alt Patient switches to manual form
+        P->>UI: Click "Switch to Manual Form"
+        UI->>GW: POST /api/intake/switch {sessionId, mode: Manual}
+        GW->>IS: Route
+        IS->>DB: Update IntakeRecord mode, preserve parsed fields
+        IS-->>GW: {prePopulatedFields}
+        GW-->>UI: Manual form pre-filled
+        UI-->>P: Manual form with data preserved
+    end
+
+    opt Low confidence on a field
+        IS->>GEMINI: Clarifying follow-up question
+        GEMINI-->>IS: Refined question
+        IS-->>GW: {clarifyingQuestion, fieldName}
+        GW-->>UI: Clarifying question
+        UI-->>P: "Could you clarify your [field]?"
+    end

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\HealthPlatform.Notification.Api.props" />
+</Project>

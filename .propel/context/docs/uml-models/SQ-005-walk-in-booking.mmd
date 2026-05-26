@@ -1,0 +1,58 @@
+﻿sequenceDiagram
+    participant S as Staff
+    participant UI as Angular 17<br/>Staff Dashboard
+    participant GW as YARP Gateway
+    participant APPT as Appointment Service
+    participant AUTH as Auth Service
+    participant DB as PostgreSQL
+
+    Note over S,DB: UC-005 â€” Staff Creates a Walk-In Booking
+
+    S->>UI: Navigate to walk-in booking interface
+    S->>UI: Search patient by name or DOB
+    UI->>GW: GET /api/patients/search?q=...
+    GW->>APPT: Route (JWT, Staff role)
+    APPT->>DB: Search Patient by name/DOB
+    APPT-->>GW: {results: [...] or empty}
+    GW-->>UI: Search results
+    UI-->>S: Display matching patients (or no results)
+
+    alt Patient found
+        S->>UI: Select existing patient
+    end
+
+    alt Patient not found â€” create account
+        S->>UI: Click "Create Patient Account"
+        S->>UI: Enter name, contact, email
+        UI->>GW: POST /api/patients/walk-in-create {name, contact, email}
+        GW->>AUTH: Route
+        AUTH->>DB: Create User (role=Patient) + Patient record
+        AUTH-->>GW: {patientId}
+        GW-->>UI: Patient created
+        UI-->>S: New patient linked to booking
+    end
+
+    alt Skip account creation â€” anonymous visit
+        S->>UI: Click "Skip â€” Anonymous Visit"
+        UI->>GW: POST /api/appointments/walk-in {anonymous: true}
+        GW->>APPT: Route
+        APPT->>DB: Generate temporary visit ID
+        APPT-->>GW: {tempVisitId}
+    end
+
+    S->>UI: Assign to available slot or add to queue
+    UI->>GW: POST /api/appointments/walk-in {patientId, slotId?}
+    GW->>APPT: Route
+    APPT->>DB: Create Appointment (bookingType=WalkIn, status=Confirmed)
+    APPT->>DB: Add to same-day queue
+    APPT->>DB: Insert AuditLogEntry
+    APPT-->>GW: {appointmentId, queuePosition}
+    GW-->>UI: Walk-in confirmed
+    UI-->>S: Patient appears in same-day queue
+
+    opt No slots available
+        APPT->>DB: Add to overflow queue with estimated wait time
+        APPT-->>GW: {queued, estimatedWait}
+        GW-->>UI: "Added to overflow queue"
+        UI-->>S: Queue position + wait estimate
+    end

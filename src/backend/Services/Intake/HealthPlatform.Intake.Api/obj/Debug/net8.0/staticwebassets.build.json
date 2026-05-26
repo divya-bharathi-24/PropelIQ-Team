@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "DpK5nSHSVPswNXbFbZGhU8dtQYegMOaKksmJ3giSHto=",
+  "Source": "HealthPlatform.Intake.Api",
+  "BasePath": "_content/HealthPlatform.Intake.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

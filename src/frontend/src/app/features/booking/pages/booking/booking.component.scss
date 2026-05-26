@@ -1,0 +1,21 @@
+.booking-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-toggle {
+  margin-left: auto;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}

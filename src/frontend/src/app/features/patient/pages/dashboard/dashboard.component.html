@@ -1,0 +1,61 @@
+<div class="dashboard-container">
+  @if (loading) {
+    <div class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <div class="dashboard-grid">
+      <!-- Upcoming Appointments -->
+      <mat-card class="section-card appointments-card">
+        <mat-card-header>
+          <mat-card-title>Upcoming Appointments</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (appointmentsError) {
+            <div class="error-placeholder">
+              <mat-icon>error_outline</mat-icon>
+              <p>Unable to load appointments</p>
+            </div>
+          } @else if (appointments?.length) {
+            @for (appt of appointments; track appt.id) {
+              <app-appointment-card [appointment]="appt"></app-appointment-card>
+            }
+          } @else {
+            <div class="empty-state">
+              <mat-icon>event_available</mat-icon>
+              <p>No upcoming appointments</p>
+              <button mat-raised-button color="primary" routerLink="/patient/book">Book Now</button>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Quick Actions -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-quick-actions (actionClicked)="onQuickAction($event)"></app-quick-actions>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Recent Activity -->
+      <mat-card class="section-card activity-card">
+        <mat-card-header>
+          <mat-card-title>Recent Activity</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (activitiesError) {
+            <div class="error-placeholder">
+              <mat-icon>error_outline</mat-icon>
+              <p>Unable to load recent activity</p>
+            </div>
+          } @else {
+            <app-activity-feed [activities]="activities ?? []"></app-activity-feed>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

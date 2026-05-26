@@ -1,0 +1,94 @@
+<div class="registration-page">
+  <div class="registration-card">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join the Health Platform</p>
+
+    @if (errorMessage) {
+      <div class="error-banner" role="alert">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="registration-form">
+      <mat-form-field appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" autocomplete="given-name">
+        @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+          <mat-error>First name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" autocomplete="family-name">
+        @if (form.get('lastName')?.hasError('required') && form.get('lastName')?.touched) {
+          <mat-error>Last name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="email">
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Invalid email format</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" type="tel" autocomplete="tel">
+        @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
+          <mat-error>Phone is required</mat-error>
+        }
+        @if (form.get('phone')?.hasError('pattern') && form.get('phone')?.touched) {
+          <mat-error>Invalid phone format</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (form.get('dateOfBirth')?.hasError('required') && form.get('dateOfBirth')?.touched) {
+          <mat-error>Date of birth is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password"
+               [type]="hidePassword ? 'password' : 'text'"
+               autocomplete="new-password">
+        <button mat-icon-button matSuffix type="button"
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.touched && form.get('password')?.invalid) {
+          <mat-error>Min 8 chars with uppercase, number, and special character</mat-error>
+        }
+      </mat-form-field>
+
+      @if (form.get('password')?.value) {
+        <div class="password-strength" [class]="passwordStrength">
+          <span>Password strength: {{ passwordStrength }}</span>
+        </div>
+      }
+
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="loading" class="submit-btn">
+        @if (loading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Register
+        }
+      </button>
+    </form>
+
+    <p class="login-link">
+      Already have an account? <a routerLink="/auth/login">Sign in</a>
+    </p>
+  </div>
+</div>

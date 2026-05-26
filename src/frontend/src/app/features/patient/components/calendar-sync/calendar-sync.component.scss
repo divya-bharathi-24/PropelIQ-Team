@@ -1,0 +1,52 @@
+.calendar-sync-container {
+  padding: 16px 0;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.no-connections {
+  color: #666;
+  text-align: center;
+  padding: 24px;
+}
+
+.connect-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.ics-feed-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.feed-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feed-url {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  background: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.feed-hint {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}

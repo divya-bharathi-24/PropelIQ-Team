@@ -1,0 +1,13 @@
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\bin\Debug\net8.0\HealthPlatform.Shared.deps.json
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\bin\Debug\net8.0\HealthPlatform.Shared.dll
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\bin\Debug\net8.0\HealthPlatform.Shared.pdb
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.csproj.AssemblyReference.cache
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.GeneratedMSBuildEditorConfig.editorconfig
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.AssemblyInfoInputs.cache
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.AssemblyInfo.cs
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.csproj.CoreCompileInputs.cache
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.sourcelink.json
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.dll
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\refint\HealthPlatform.Shared.dll
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\HealthPlatform.Shared.pdb
+d:\PropelIQ-Team\src\backend\Shared\HealthPlatform.Shared\obj\Debug\net8.0\ref\HealthPlatform.Shared.dll

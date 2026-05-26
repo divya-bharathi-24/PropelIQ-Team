@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+packages/
+
+# Build outputs
+dist/
+build/
+bin/
+obj/
+out/
+
+# .NET
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild[Ll]og.*
+*.DotSettings.user
+
+# IDE
+.vs/
+.vscode/.history/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Angular
+.angular/
+.sass-cache/
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+*.lcov
+
+# Temp
+tmp/
+temp/

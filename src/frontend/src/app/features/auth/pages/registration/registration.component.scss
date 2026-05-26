@@ -1,0 +1,51 @@
+.registration-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.registration-card {
+  max-width: 480px;
+  width: 100%;
+  padding: 32px;
+
+  h1 { margin: 0 0 8px; }
+  .subtitle { color: #666; margin: 0 0 24px; }
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  mat-form-field { width: 100%; }
+}
+
+.error-banner {
+  background: #fdecea;
+  color: #611a15;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.password-strength {
+  font-size: 12px;
+  margin-bottom: 8px;
+  &.weak { color: #d32f2f; }
+  &.medium { color: #f57c00; }
+  &.strong { color: #388e3c; }
+}
+
+.submit-btn {
+  margin-top: 8px;
+  height: 48px;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 16px;
+  a { color: #1565c0; }
+}

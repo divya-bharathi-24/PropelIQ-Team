@@ -1,0 +1,46 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17<br/>Intake Form UI
+    participant GW as YARP Gateway
+    participant IS as Intake Service
+    participant DB as PostgreSQL
+
+    Note over P,DB: UC-003 â€” Patient Completes Manual Intake Form
+
+    P->>UI: Open intake, select "Manual Form"
+    UI->>GW: POST /api/intake/start {appointmentId, mode: Manual}
+    GW->>IS: Route (JWT, Patient role)
+    IS->>DB: Create IntakeRecord (mode=Manual, status=InProgress)
+    IS-->>GW: {intakeId, formSchema}
+    GW-->>UI: Form structure
+    UI-->>P: Display structured intake form
+
+    loop Patient fills fields
+        P->>UI: Enter data in form field
+        UI->>GW: PATCH /api/intake/autosave {intakeId, fieldName, value}
+        GW->>IS: Route
+        IS->>DB: Upsert field value (autosave on blur)
+        IS-->>GW: {saved}
+    end
+
+    P->>UI: Click "Submit"
+    UI->>GW: POST /api/intake/submit {intakeId}
+    GW->>IS: Route
+    IS->>DB: Validate all required fields
+    IS->>DB: Update IntakeRecord (status=Complete)
+    IS->>DB: Insert AuditLogEntry
+    IS-->>GW: {success}
+    GW-->>UI: Submission confirmed
+    UI-->>P: "Intake form submitted"
+
+    alt Required fields missing
+        IS->>DB: Validate required fields
+        IS-->>GW: {error: missing_fields, fields: [...]}
+        GW-->>UI: Validation errors
+        UI-->>P: Highlight missing required fields
+    end
+
+    opt Pre-populated from AI intake switch
+        Note right of UI: Form pre-filled with AI-parsed values
+        UI-->>P: Fields already populated from AI session
+    end

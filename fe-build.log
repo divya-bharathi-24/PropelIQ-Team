@@ -1,0 +1,240 @@
+=== STATE CHECK ===
+node_modules: EXISTS
+package-lock.json: EXISTS
+=== NPM INSTALL ===
+
+up to date in 2s
+=== NPM BUILD ===
+
+> health-platform-frontend@0.0.1 build
+> ng build
+
+- Building...
+
+Application bundle generation failed. [13.443 seconds]
+
+X [ERROR] TS6133: 'switchMap' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/booking/pages/booking/booking.component.ts:8:36:
+      8 │ import { Subject, takeUntil, timer, switchMap, merge } from 'rxjs';
+        ╵                                     ~~~~~~~~~
+
+
+X [ERROR] TS6133: 'merge' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/booking/pages/booking/booking.component.ts:8:47:
+      8 │ import { Subject, takeUntil, timer, switchMap, merge } from 'rxjs';
+        ╵                                                ~~~~~
+
+
+X [ERROR] TS6133: 'timer' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/booking/services/slot-websocket.service.ts:2:30:
+      2 │ import { Observable, Subject, timer, EMPTY } from 'rxjs';
+        ╵                               ~~~~~
+
+
+X [ERROR] TS6133: 'EMPTY' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/booking/services/slot-websocket.service.ts:2:37:
+      2 │ import { Observable, Subject, timer, EMPTY } from 'rxjs';
+        ╵                                      ~~~~~
+
+
+X [ERROR] TS6133: 'switchMap' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/booking/services/slot-websocket.service.ts:4:9:
+      4 │ import { switchMap, retryWhen, delay, takeUntil } from 'rxjs/operat...
+        ╵          ~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:20:11:
+      20 │       @if (!connections.length || !connections.some(c => c.provide...
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5: Argument of type 'undefined' is not assignable to parameter of type '(value: CalendarConnectionStatus, index: number, array: CalendarConnectionStatus[]) => unknown'. [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:20:52:
+      20 │ ...ions.some(c => c.provider === 'google' && c.status === 'active'...
+         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:21:59:
+      21 │ ...utton mat-raised-button color="primary" (click)="connectGoogle()">
+         ╵                                                     ~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:26:11:
+      26 │       @if (!connections.length || !connections.some(c => c.provide...
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'ics' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@25:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:26:11:
+      26 │       @if (!connections.length || !connections.some(c => c.provide...
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5: Argument of type 'undefined' is not assignable to parameter of type '(value: CalendarConnectionStatus, index: number, array: CalendarConnectionStatus[]) => unknown'. [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:26:52:
+      26 │ ...ctions.some(c => c.provider === 'ics' && c.status === 'active')) {
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:27:44:
+      27 │         <button mat-stroked-button (click)="enableIcsFeed()">
+         ╵                                             ~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'ics' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@25:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:27:44:
+      27 │         <button mat-stroked-button (click)="enableIcsFeed()">
+         ╵                                             ~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:33:9:
+      33 │     @if (icsFeedUrl) {
+         ╵          ~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'ics' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@25:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:33:9:
+      33 │     @if (icsFeedUrl) {
+         ╵          ~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:37:33:
+      37 │           <code class="feed-url">{{ icsFeedUrl }}</code>
+         ╵                                  ~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'ics' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@25:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:37:33:
+      37 │           <code class="feed-url">{{ icsFeedUrl }}</code>
+         ╵                                  ~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'google' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@19:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:38:43:
+      38 │           <button mat-icon-button (click)="copyFeedUrl()">
+         ╵                                            ~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Parser Error: Bindings cannot contain assignments at column 45 in [!connections.length || !connections.some(c => c.provider === 'ics' && c.status === 'active')] in d:/PropelIQ-Team/src/frontend/src/app/features/patient/components/calendar-sync/calendar-sync.component.html@25:11 [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.html:38:43:
+      38 │           <button mat-icon-button (click)="copyFeedUrl()">
+         ╵                                            ~~~~~~~~~~~~~
+
+  Error occurs in the template of component CalendarSyncComponent.
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:19:15:
+      19 │   templateUrl: './calendar-sync.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] TS6138: Property 'dialog' is declared but its value is never read. [plugin angular-compiler]
+
+    src/app/features/patient/components/calendar-sync/calendar-sync.component.ts:31:21:
+      31 │     private readonly dialog: MatDialog,
+         ╵                      ~~~~~~
+
+
+=== DONE ===

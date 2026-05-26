@@ -1,0 +1,177 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-healthplatform}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-healthplatform}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U healthplatform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gateway:
+    build:
+      context: ./src/backend
+      dockerfile: Gateway/HealthPlatform.Gateway/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Jwt__Key=${JWT_KEY:-super-secret-dev-key-at-least-32-chars-long}
+      - Jwt__Issuer=HealthPlatform
+      - Jwt__Audience=HealthPlatformClients
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      appointment-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 15s
+      retries: 3
+
+  auth-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Auth/HealthPlatform.Auth.Api/Dockerfile
+    ports:
+      - "5010:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__AuthDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=auth
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  appointment-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Appointment/HealthPlatform.Appointment.Api/Dockerfile
+    ports:
+      - "5020:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__AppointmentDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=appointment
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  intake-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Intake/HealthPlatform.Intake.Api/Dockerfile
+    ports:
+      - "5030:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__IntakeDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=clinical_intelligence
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  document-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Document/HealthPlatform.Document.Api/Dockerfile
+    ports:
+      - "5040:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DocumentDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=document
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  clinical-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/ClinicalIntelligence/HealthPlatform.ClinicalIntelligence.Api/Dockerfile
+    ports:
+      - "5050:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__ClinicalDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=clinical_intelligence
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  notification-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Notification/HealthPlatform.Notification.Api/Dockerfile
+    ports:
+      - "5060:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__NotificationDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=notification
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+  admin-service:
+    build:
+      context: ./src/backend
+      dockerfile: Services/Admin/HealthPlatform.Admin.Api/Dockerfile
+    ports:
+      - "5070:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__AdminDb=Host=postgres;Database=healthplatform;Username=healthplatform;Password=devpassword;Search Path=audit
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  pgdata:

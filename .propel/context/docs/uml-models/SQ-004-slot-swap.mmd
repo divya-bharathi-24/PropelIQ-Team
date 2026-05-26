@@ -1,0 +1,54 @@
+﻿sequenceDiagram
+    participant P2 as Another Patient
+    participant UI2 as Angular 17 SPA
+    participant GW as YARP Gateway
+    participant APPT as Appointment Service
+    participant HF as Hangfire Worker
+    participant NOTIF as Notification Service
+    participant DB as PostgreSQL
+    participant SG as SendGrid
+    participant P1 as Waitlisted Patient
+
+    Note over P2,P1: UC-004 â€” Preferred Slot Swap Triggered Automatically
+
+    P2->>UI2: Cancel appointment
+    UI2->>GW: POST /api/appointments/cancel {appointmentId}
+    GW->>APPT: Route (JWT validated)
+    APPT->>DB: Update Appointment (status=Cancelled)
+    APPT->>DB: Release slot (status=Available)
+    APPT->>DB: Insert outbox event (SlotReleased)
+    APPT-->>GW: {cancelled}
+    GW-->>UI2: Cancellation confirmed
+
+    HF->>DB: Poll outbox â€” detect SlotReleased event
+    HF->>DB: Query PreferredSwapEntry matching released slot (FIFO order)
+    HF->>DB: Found match â€” P1's swap entry (oldest registeredAt)
+
+    HF->>DB: Begin transaction
+    HF->>DB: Cancel P1's current appointment (status=Cancelled)
+    HF->>DB: Release P1's original slot (status=Available)
+    HF->>DB: Create new Appointment for P1 at preferred slot (status=Confirmed)
+    HF->>DB: Update PreferredSwapEntry (status=Executed)
+    HF->>DB: Commit transaction
+
+    HF->>DB: Insert outbox event (SwapExecuted)
+    HF->>DB: Insert AuditLogEntry (slot swap)
+
+    NOTIF->>DB: Poll outbox â€” detect SwapExecuted event
+    NOTIF->>SG: Send email to P1 (new appointment details)
+    NOTIF->>SG: Send SMS to P1 (new appointment details)
+    NOTIF->>DB: Log NotificationEvent (channel=Email, status=Sent)
+    NOTIF->>DB: Log NotificationEvent (channel=SMS, status=Sent)
+
+    Note right of P1: Patient receives email + SMS with new slot
+
+    alt Multiple patients waitlisted for same slot
+        HF->>DB: Select FIFO â€” first registeredAt wins
+        Note right of HF: Remaining patients retain waitlist entries
+    end
+
+    alt SMS delivery fails
+        NOTIF->>DB: Log NotificationEvent (status=Failed)
+        NOTIF->>SG: Retry SMS after 5 minutes
+        NOTIF->>DB: Update NotificationEvent (status=Retried)
+    end

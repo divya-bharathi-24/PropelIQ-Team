@@ -1,0 +1,60 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17<br/>Intake Chat UI
+    participant GW as YARP Gateway
+    participant IS as Intake Service
+    participant GEMINI as Gemini API<br/>(gemini-1.5-flash)
+    participant CB as Polly Circuit Breaker
+    participant DB as PostgreSQL
+
+    Note over P,DB: UC-002 â€” AI-Assisted Conversational Intake
+
+    P->>UI: Select "AI-Assisted" intake mode
+    UI->>GW: POST /api/intake/start {appointmentId, mode: AI}
+    GW->>IS: Route (JWT validated, Patient role)
+    IS->>DB: Create IntakeRecord (mode=AI, status=InProgress)
+    IS->>GEMINI: Send opening prompt (structured output schema)
+    GEMINI-->>IS: Opening question JSON
+    IS-->>GW: {question, sessionId}
+    GW-->>UI: Opening question
+    UI-->>P: Display chat question
+
+    loop For each intake section
+        P->>UI: Type free-text response
+        UI->>GW: POST /api/intake/respond {sessionId, text}
+        GW->>IS: Route
+        IS->>CB: Check circuit state
+        CB-->>IS: CLOSED (healthy)
+        IS->>GEMINI: Send response + extraction prompt
+        GEMINI-->>IS: Extracted fields JSON + next question
+        IS->>DB: Upsert IntakeRecord fields (autosave)
+        IS-->>GW: {parsedFields, nextQuestion, confidence}
+        GW-->>UI: Parsed fields + next question
+        UI-->>P: Show live preview + next question
+    end
+
+    P->>UI: Review auto-populated form & submit
+    UI->>GW: POST /api/intake/submit {sessionId}
+    GW->>IS: Route
+    IS->>DB: Update IntakeRecord (status=Complete)
+    IS-->>GW: {success, intakeId}
+    GW-->>UI: Confirmation
+    UI-->>P: Intake complete notification
+
+    alt Gemini API circuit breaker OPEN
+        IS->>CB: Check circuit state
+        CB-->>IS: OPEN (3 failures, 60s recovery)
+        IS-->>GW: {fallback: manual_form, reason: ai_unavailable}
+        GW-->>UI: Redirect to manual form
+        UI-->>P: "AI temporarily unavailable, switching to manual form"
+    end
+
+    opt Patient switches to manual mid-intake
+        P->>UI: Click "Switch to Manual Form"
+        UI->>GW: POST /api/intake/switch {sessionId, mode: Manual}
+        GW->>IS: Route
+        IS->>DB: Update IntakeRecord (mode=Manual, preserve fields)
+        IS-->>GW: {prePopulatedFields}
+        GW-->>UI: Manual form with pre-populated data
+        UI-->>P: Display manual form
+    end

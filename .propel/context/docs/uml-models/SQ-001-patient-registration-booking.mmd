@@ -1,0 +1,88 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17 SPA
+    participant GW as YARP Gateway
+    participant AUTH as Auth Service
+    participant APPT as Appointment Service
+    participant INS as Insurance Validation
+    participant NOTIF as Notification Service
+    participant DB as PostgreSQL
+    participant REDIS as Upstash Redis
+    participant CAL as Calendar API
+    participant SG as SendGrid
+
+    Note over P,SG: UC-001 â€” Patient Self-Registers and Books an Appointment
+
+    P->>UI: Navigate to registration page
+    P->>UI: Enter email, password, demographics
+    UI->>GW: POST /api/auth/register {email, password, demographics}
+    GW->>AUTH: Route (no auth required)
+    AUTH->>DB: Check email uniqueness
+    AUTH->>DB: Create User (role=Patient, status=Pending)
+    AUTH->>DB: Create Patient record
+    AUTH->>SG: Send verification email
+    AUTH-->>GW: {userId, verificationSent: true}
+    GW-->>UI: Registration success â€” verify email
+    UI-->>P: "Check your email for verification link"
+
+    P->>UI: Click verification link
+    UI->>GW: POST /api/auth/verify-email {token}
+    GW->>AUTH: Route
+    AUTH->>DB: Activate User (status=Active, emailVerified=true)
+    AUTH-->>GW: {verified, jwt}
+    GW-->>UI: JWT token + redirect to booking
+    UI-->>P: Redirect to booking interface
+
+    P->>UI: View available slots
+    UI->>GW: GET /api/appointments/slots?date=...
+    GW->>APPT: Route (JWT, Patient role)
+    APPT->>REDIS: Check slot cache
+    REDIS-->>APPT: Cached slots (or miss)
+    APPT->>DB: Query available slots
+    APPT-->>GW: Available slots list
+    GW-->>UI: Slot data
+    UI-->>P: Display available slots
+
+    P->>UI: Select slot + optionally designate preferred slot
+    UI->>GW: POST /api/appointments/book {slotId, preferredSlotId?}
+    GW->>APPT: Route
+    APPT->>DB: Optimistic lock â€” reserve slot (Availableâ†’Reserved)
+    APPT->>DB: Create Appointment record
+    APPT->>DB: Create PreferredSwapEntry (if preferred slot designated)
+
+    P->>UI: Enter insurance details
+    UI->>GW: POST /api/insurance/pre-check {insurerName, memberId}
+    GW->>APPT: Route
+    APPT->>INS: Match against InsuranceDummyRecord
+    INS-->>APPT: {status: Verified|NotRecognized|Incomplete}
+    APPT-->>GW: Insurance status
+    GW-->>UI: Display validation result
+    UI-->>P: Insurance status (non-blocking)
+
+    P->>UI: Select intake mode and confirm booking
+    UI->>GW: POST /api/appointments/confirm {appointmentId, intakeMode}
+    GW->>APPT: Route
+    APPT->>DB: Update Appointment (Reservedâ†’Confirmed)
+    APPT->>DB: Generate PDF confirmation
+    APPT->>SG: Email PDF to patient
+    APPT->>DB: Insert AuditLogEntry
+    APPT-->>GW: {confirmed, referenceNumber}
+    GW-->>UI: Booking confirmed
+    UI-->>P: Confirmation + "Add to Calendar" option
+
+    alt Patient adds to calendar
+        P->>UI: Click "Add to Calendar" (Google/Outlook)
+        UI->>GW: POST /api/calendar/sync {appointmentId, provider}
+        GW->>APPT: Route
+        APPT->>CAL: Create calendar event (ICS/OAuth)
+        CAL-->>APPT: Event created
+        APPT-->>GW: {synced}
+        GW-->>UI: Calendar sync confirmed
+    end
+
+    alt Email already registered
+        AUTH->>DB: Email exists check
+        AUTH-->>GW: {error: email_exists}
+        GW-->>UI: Error message
+        UI-->>P: "Email already registered â€” please log in"
+    end

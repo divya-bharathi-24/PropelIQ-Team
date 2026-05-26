@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "tPJSqWxksJeiVoBZn+knRDNDmDz2DLfYe3Ky99XUtjs=",
+  "Source": "HealthPlatform.Gateway",
+  "BasePath": "_content/HealthPlatform.Gateway",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

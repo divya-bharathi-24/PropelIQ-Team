@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Q2fZSMN4erzIYTLBjYs0Y8t8GbitIyIMttnRT63Rof4=",
+  "Source": "HealthPlatform.Notification.Api",
+  "BasePath": "_content/HealthPlatform.Notification.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

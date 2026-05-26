@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WcD+qaVu/qrKdirw+OlHMi7hl6JDNZ7KJxGqP24zvHc=",
+  "Source": "HealthPlatform.ClinicalIntelligence.Api",
+  "BasePath": "_content/HealthPlatform.ClinicalIntelligence.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

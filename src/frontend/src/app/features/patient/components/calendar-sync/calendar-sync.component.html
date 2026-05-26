@@ -1,0 +1,46 @@
+<div class="calendar-sync-container">
+  @if (loading) {
+    <div class="loading-spinner">
+      <mat-spinner diameter="30"></mat-spinner>
+    </div>
+  } @else {
+    <h3>Connected Calendars</h3>
+
+    @for (conn of connections; track conn.provider) {
+      <app-calendar-card
+        [connection]="conn"
+        (disconnectClicked)="onDisconnect($event)"
+        (reconnectClicked)="onReconnect($event)">
+      </app-calendar-card>
+    } @empty {
+      <p class="no-connections">No calendars connected yet.</p>
+    }
+
+    <div class="connect-actions">
+      @if (showGoogleConnect) {
+        <button mat-raised-button color="primary" (click)="connectGoogle()">
+          <mat-icon>event</mat-icon> Connect Google Calendar
+        </button>
+      }
+
+      @if (showIcsConnect) {
+        <button mat-stroked-button (click)="enableIcsFeed()">
+          <mat-icon>rss_feed</mat-icon> Enable ICS Feed
+        </button>
+      }
+    </div>
+
+    @if (icsFeedUrl) {
+      <div class="ics-feed-section">
+        <h4>ICS Feed URL</h4>
+        <div class="feed-url-row">
+          <code class="feed-url">{{ icsFeedUrl }}</code>
+          <button mat-icon-button (click)="copyFeedUrl()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+        <p class="feed-hint">Add this URL to your calendar app to subscribe.</p>
+      </div>
+    }
+  }
+</div>

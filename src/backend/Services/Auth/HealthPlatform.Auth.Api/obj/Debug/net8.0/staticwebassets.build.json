@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xUE6wkuPzpM5sQ2JeM2LfJr43bYUAHya26Y0Na1xLhw=",
+  "Source": "HealthPlatform.Auth.Api",
+  "BasePath": "_content/HealthPlatform.Auth.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

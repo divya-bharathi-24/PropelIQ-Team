@@ -1,0 +1,68 @@
+﻿sequenceDiagram
+    participant S as Staff
+    participant UI as Angular 17<br/>360Â° View UI
+    participant GW as YARP Gateway
+    participant CS as Clinical Intelligence<br/>Service
+    participant HF as Hangfire Worker
+    participant GEMINI as Gemini API
+    participant DB as PostgreSQL
+    participant REDIS as Upstash Redis
+
+    Note over S,REDIS: UC-008 â€” System Generates 360-Degree Patient View
+
+    Note right of HF: Background Pipeline (per queued document)
+    HF->>DB: Fetch ClinicalDocument (status=Queued)
+    HF->>DB: Update processingStatus=Processing
+    HF->>HF: OCR text extraction (Tesseract.NET)
+    HF->>GEMINI: Extraction prompt (6 categories + schema)
+    GEMINI-->>HF: Structured data JSON (with confidence scores)
+    HF->>DB: Save ExtractedDataElements per field
+    HF->>DB: Update ClinicalDocument (status=Completed)
+    HF->>DB: Insert outbox event (ExtractionComplete)
+
+    CS->>DB: Poll outbox â€” detect ExtractionComplete
+    CS->>DB: Fetch all ExtractedDataElements for patient
+    CS->>DB: De-duplicate identical entries across documents
+    CS->>GEMINI: Conflict analysis (ambiguous/contradictory values)
+    GEMINI-->>CS: Conflict classifications JSON
+    CS->>DB: Save DataConflicts (severity, source docs)
+    CS->>DB: Upsert PatientView360 (status=Unverified)
+    CS->>REDIS: Update 360Â° read model cache
+
+    S->>UI: Open patient's 360Â° view
+    UI->>GW: GET /api/clinical/360-view/{patientId}
+    GW->>CS: Route (JWT, Staff role)
+    CS->>REDIS: Fetch cached 360Â° data
+    REDIS-->>CS: Aggregated view
+    CS-->>GW: {demographics, vitals, medications, diagnoses, allergies, conflicts}
+    GW-->>UI: Full 360Â° payload
+    UI-->>S: Structured view with conflict indicators
+
+    alt Conflicts present
+        loop For each conflict
+            S->>UI: Select authoritative value
+            UI->>GW: POST /api/clinical/resolve-conflict {conflictId, value}
+            GW->>CS: Route
+            CS->>DB: Update DataConflict (Resolved, resolvedBy)
+            CS->>REDIS: Refresh read model
+        end
+    end
+
+    alt No conflicts
+        Note right of S: Clean view â€” proceed to verification
+    end
+
+    S->>UI: Click "Verify Profile"
+    UI->>GW: POST /api/clinical/verify/{patientId}
+    GW->>CS: Route
+    CS->>DB: Update PatientView360 (status=Verified)
+    CS->>DB: Insert AuditLogEntry (verification)
+    CS->>REDIS: Update cache
+    CS-->>GW: {verified}
+    GW-->>UI: Profile verified
+    UI-->>S: "Profile marked as Verified"
+
+    opt Document extraction failure
+        HF->>DB: Update ClinicalDocument (status=Failed)
+        Note right of S: Dashboard shows "Extraction Failed" indicator
+    end

@@ -1,0 +1,41 @@
+<div class="appointment-list-container">
+  <div class="list-header">
+    <h2>My Appointments</h2>
+    <mat-form-field appearance="outline" class="status-filter">
+      <mat-label>Status</mat-label>
+      <mat-select (selectionChange)="onStatusFilterChange($event.value)">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Scheduled">Scheduled</mat-option>
+        <mat-option value="Completed">Completed</mat-option>
+        <mat-option value="Cancelled">Cancelled</mat-option>
+        <mat-option value="NoShow">No Show</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (loading) {
+    <div class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    @for (appt of appointments; track appt.id) {
+      <app-appt-card
+        [appointment]="appt"
+        (rescheduleClicked)="onReschedule($event)"
+        (cancelClicked)="onCancel($event)"
+        (downloadPdf)="onDownloadPdf($event)">
+      </app-appt-card>
+    } @empty {
+      <div class="empty-state">
+        <p>No appointments found.</p>
+      </div>
+    }
+
+    <mat-paginator
+      [length]="totalCount"
+      [pageSize]="10"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+  }
+</div>

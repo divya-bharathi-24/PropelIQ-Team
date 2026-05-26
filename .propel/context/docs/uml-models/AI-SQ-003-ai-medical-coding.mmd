@@ -1,0 +1,54 @@
+﻿sequenceDiagram
+    participant S as Staff
+    participant UI as Angular 17<br/>Code Review UI
+    participant GW as YARP Gateway
+    participant CS as Clinical Intelligence<br/>Service
+    participant GEMINI as Gemini API<br/>(gemini-1.5-flash)
+    participant CB as Polly Circuit Breaker
+    participant DB as PostgreSQL
+
+    Note over S,DB: UC-009 â€” Staff Reviews and Confirms Extracted Medical Codes
+
+    S->>UI: Open medical coding interface for encounter
+    UI->>GW: GET /api/clinical/codes/{patientId}/{encounterId}
+    GW->>CS: Route (JWT validated, Staff role)
+    CS->>DB: Check for existing suggested codes
+    CS->>CB: Check circuit state
+    CB-->>CS: CLOSED (healthy)
+    CS->>DB: Fetch aggregated clinical text for encounter
+    CS->>GEMINI: ICD-10 suggestion prompt (clinical text + evidence requirement)
+    GEMINI-->>CS: Ranked ICD-10 suggestions JSON (up to 5)
+    CS->>GEMINI: CPT suggestion prompt (clinical text + evidence requirement)
+    GEMINI-->>CS: Ranked CPT suggestions JSON (up to 5)
+    CS->>DB: Save MedicalCodes (status=Suggested, confidenceScores)
+    CS-->>GW: {icd10Suggestions, cptSuggestions}
+    GW-->>UI: Code suggestions with evidence
+    UI-->>S: Display side-by-side ICD-10 + CPT review
+
+    loop For each suggested code
+        S->>UI: Click "Confirm" or "Reject"
+        UI->>GW: POST /api/clinical/codes/review {codeId, action}
+        GW->>CS: Route
+        CS->>DB: Update MedicalCode (status=Confirmed|Rejected, confirmedBy, confirmedAt)
+        CS->>DB: Insert AuditLogEntry (code confirmation/rejection)
+        CS-->>GW: {updated}
+        GW-->>UI: Code status updated
+    end
+
+    opt Staff adds manual code
+        S->>UI: Enter manual ICD-10 or CPT code
+        UI->>GW: POST /api/clinical/codes/manual {codeType, codeValue}
+        GW->>CS: Route
+        CS->>DB: Validate code format against standard library
+        CS->>DB: Save MedicalCode (status=Confirmed, confidence=1.0)
+        CS-->>GW: {saved}
+        GW-->>UI: Manual code added
+    end
+
+    alt Gemini API circuit breaker OPEN
+        CS->>CB: Check circuit state
+        CB-->>CS: OPEN (degraded)
+        CS-->>GW: {suggestions: [], fallback: manual_entry_only}
+        GW-->>UI: "AI suggestions unavailable â€” manual entry mode"
+        UI-->>S: Display empty code form for manual entry
+    end

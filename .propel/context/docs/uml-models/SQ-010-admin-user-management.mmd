@@ -1,0 +1,81 @@
+﻿sequenceDiagram
+    participant A as Admin
+    participant UI as Angular 17<br/>Admin Panel
+    participant GW as YARP Gateway
+    participant ADMIN as Admin & Audit Service
+    participant AUTH as Auth Service
+    participant DB as PostgreSQL
+    participant SG as SendGrid
+
+    Note over A,SG: UC-010 â€” Admin Manages User Accounts
+
+    A->>UI: Navigate to User Management
+    UI->>GW: GET /api/admin/users
+    GW->>ADMIN: Route (JWT, Admin role)
+    ADMIN->>DB: Query all managed users (name, role, status, lastLogin)
+    ADMIN-->>GW: User list
+    GW-->>UI: User data
+    UI-->>A: Display user account table
+
+    alt Create new Staff account
+        A->>UI: Click "Create User", enter details
+        UI->>GW: POST /api/admin/users {name, email, role: Staff}
+        GW->>ADMIN: Route
+        ADMIN->>AUTH: Create User (role=Staff, status=Pending)
+        AUTH->>DB: Insert User record
+        AUTH->>SG: Send credential setup email
+        AUTH-->>ADMIN: {userId}
+        ADMIN->>DB: Insert AuditLogEntry (Admin created Staff account)
+        ADMIN-->>GW: {created, userId}
+        GW-->>UI: User created
+        UI-->>A: New user appears in table
+    end
+
+    alt Edit account details
+        A->>UI: Select user, edit fields
+        UI->>GW: PATCH /api/admin/users/{userId} {fields}
+        GW->>ADMIN: Route
+        ADMIN->>DB: Update User record
+        ADMIN->>DB: Insert AuditLogEntry (before/after state)
+        ADMIN-->>GW: {updated}
+        GW-->>UI: Changes saved
+    end
+
+    alt Deactivate account (requires re-auth)
+        A->>UI: Click "Deactivate"
+        UI->>UI: Prompt re-authentication dialog
+        A->>UI: Enter current password
+        UI->>GW: POST /api/auth/re-authenticate {password}
+        GW->>AUTH: Verify password
+        AUTH-->>GW: {verified: true}
+        UI->>GW: POST /api/admin/users/{userId}/deactivate
+        GW->>ADMIN: Route
+        ADMIN->>DB: Update User (status=Inactive, soft-delete)
+        ADMIN->>DB: Insert AuditLogEntry (deactivation, before/after)
+        ADMIN-->>GW: {deactivated}
+        GW-->>UI: Account deactivated
+        UI-->>A: User status updated to "Inactive"
+    end
+
+    alt Change role to Admin (requires re-auth)
+        A->>UI: Select user, change role to Admin
+        UI->>UI: Prompt re-authentication
+        A->>UI: Enter current password
+        UI->>GW: POST /api/auth/re-authenticate {password}
+        GW->>AUTH: Verify password
+        AUTH-->>GW: {verified}
+        UI->>GW: PATCH /api/admin/users/{userId}/role {role: Admin}
+        GW->>ADMIN: Route
+        ADMIN->>DB: Update User role
+        ADMIN->>DB: Insert AuditLogEntry (role change, before/after)
+        ADMIN-->>GW: {updated}
+        GW-->>UI: Role changed
+        UI-->>A: "Role takes effect on user's next session"
+    end
+
+    alt Re-authentication fails
+        AUTH-->>GW: {error: invalid_password}
+        GW-->>UI: Re-auth failed
+        UI-->>A: "Authentication failed â€” action cancelled"
+        ADMIN->>DB: Insert AuditLogEntry (failed re-auth attempt)
+    end

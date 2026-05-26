@@ -1,0 +1,57 @@
+﻿sequenceDiagram
+    participant P as Patient
+    participant UI as Angular 17 SPA
+    participant GW as YARP Gateway
+    participant APPT as Appointment Service
+    participant CAL as Calendar API<br/>(Google/Outlook)
+
+    Note over P,CAL: UC-012 â€” Patient Syncs Appointment to External Calendar
+
+    P->>UI: Click "Add to Calendar" on confirmation/dashboard
+    UI-->>P: Calendar options: Google Calendar / Outlook
+
+    alt Google Calendar (OAuth)
+        P->>UI: Select "Google Calendar"
+        UI->>GW: POST /api/calendar/sync {appointmentId, provider: google}
+        GW->>APPT: Route (JWT, Patient role)
+        APPT->>APPT: Build calendar event (date, time, provider, location, reference)
+        APPT->>CAL: Google Calendar API â€” create event (OAuth token)
+        CAL-->>APPT: Event created {eventId, link}
+        APPT->>APPT: Store calendar event reference
+        APPT-->>GW: {synced, eventLink}
+        GW-->>UI: Sync confirmed
+        UI-->>P: "Added to Google Calendar" + event link
+    end
+
+    alt Outlook Calendar (OAuth)
+        P->>UI: Select "Outlook"
+        UI->>GW: POST /api/calendar/sync {appointmentId, provider: outlook}
+        GW->>APPT: Route
+        APPT->>CAL: Outlook Calendar API â€” create event
+        CAL-->>APPT: Event created
+        APPT-->>GW: {synced}
+        GW-->>UI: Sync confirmed
+        UI-->>P: "Added to Outlook Calendar"
+    end
+
+    alt ICS file download
+        P->>UI: Select "Download ICS"
+        UI->>GW: GET /api/calendar/ics/{appointmentId}
+        GW->>APPT: Route
+        APPT->>APPT: Generate ICS file content
+        APPT-->>GW: ICS file bytes
+        GW-->>UI: Download response
+        UI-->>P: ICS file downloaded for manual import
+    end
+
+    alt Calendar API authorization denied
+        CAL-->>APPT: Authorization denied
+        APPT-->>GW: {error: auth_denied}
+        GW-->>UI: Permission error
+        UI-->>P: "Calendar access denied â€” please grant permission"
+    end
+
+    opt Appointment rescheduled or cancelled
+        APPT->>CAL: Update or delete calendar event
+        CAL-->>APPT: Event updated/deleted
+    end

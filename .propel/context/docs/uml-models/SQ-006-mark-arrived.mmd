@@ -1,0 +1,35 @@
+﻿sequenceDiagram
+    participant S as Staff
+    participant UI as Angular 17<br/>Staff Dashboard
+    participant GW as YARP Gateway
+    participant APPT as Appointment Service
+    participant DB as PostgreSQL
+
+    Note over S,DB: UC-006 â€” Staff Marks Patient as Arrived
+
+    S->>UI: Open same-day queue view
+    UI->>GW: GET /api/appointments/queue?date=today
+    GW->>APPT: Route (JWT, Staff role)
+    APPT->>DB: Query today's appointments (with status, patient name, time)
+    APPT-->>GW: Queue list
+    GW-->>UI: Same-day queue data
+    UI-->>S: Display queue (name, time, type, status)
+
+    S->>UI: Locate patient, click "Mark as Arrived"
+    UI->>GW: PATCH /api/appointments/{appointmentId}/arrive
+    GW->>APPT: Route
+    APPT->>DB: Update Appointment (status=Arrived, arrivedAt=now)
+    APPT->>DB: Insert AuditLogEntry (staffId, action=Update)
+    APPT-->>GW: {status: Arrived, arrivedAt}
+    GW-->>UI: Status updated
+    UI-->>S: Queue refreshes with "Arrived" status
+
+    alt Patient not in today's queue
+        S->>UI: Search by name or reference number
+        UI->>GW: GET /api/appointments/search?q=...
+        GW->>APPT: Route
+        APPT->>DB: Search appointments
+        APPT-->>GW: {results}
+        GW-->>UI: Search results
+        UI-->>S: Found appointment â€” proceed to mark arrived
+    end

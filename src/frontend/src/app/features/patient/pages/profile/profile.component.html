@@ -1,0 +1,79 @@
+<div class="profile-container">
+  @if (loading) {
+    <div class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <mat-tab-group>
+      <mat-tab label="Personal Information">
+        <mat-card class="photo-section">
+          <div class="photo-wrapper">
+            @if (photoPreview) {
+              <img [src]="photoPreview" alt="Profile photo" class="photo-preview" width="200" height="200" />
+            } @else {
+              <mat-icon class="photo-placeholder">account_circle</mat-icon>
+            }
+            @if (uploadingPhoto) {
+              <mat-spinner diameter="24" class="upload-spinner"></mat-spinner>
+            }
+          </div>
+          <input type="file" accept="image/jpeg,image/png" hidden #photoInput (change)="onPhotoSelected($event)" />
+          <button mat-stroked-button (click)="photoInput.click()" [disabled]="uploadingPhoto">
+            <mat-icon>photo_camera</mat-icon> Change Photo
+          </button>
+        </mat-card>
+
+        <mat-accordion>
+          <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Personal Information</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="profileForm" (ngSubmit)="save()">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone" type="tel" />
+              @if (profileForm.get('phone')?.hasError('pattern')) {
+                <mat-error>Invalid phone format</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput formControlName="dateOfBirth" type="date" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            @if (editing) {
+              <button mat-button type="button" (click)="toggleEdit()">Cancel</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || saving">
+                @if (saving) { <mat-spinner diameter="20"></mat-spinner> } @else { Save }
+              </button>
+            } @else {
+              <button mat-raised-button color="accent" type="button" (click)="toggleEdit()">
+                <mat-icon>edit</mat-icon> Edit
+              </button>
+            }
+          </div>
+        </form>
+      </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="Calendar Sync">
+        <app-calendar-sync></app-calendar-sync>
+      </mat-tab>
+    </mat-tab-group>
+  }
+</div>

@@ -1,0 +1,37 @@
+=== STATE CHECK ===
+node_modules: EXISTS
+package-lock.json: EXISTS
+=== NPM INSTALL ===
+
+up to date in 2s
+=== NPM BUILD ===
+
+> health-platform-frontend@0.0.1 build
+> ng build
+
+- Building...
+
+Initial chunk files   | Names                       |  Raw size | Estimated transfer size
+chunk-E5C67BA4.js     | -                           |  93.79 kB |                28.10 kB
+chunk-IBV2HREN.js     | -                           |  92.85 kB |                23.55 kB
+styles-6O24AHTG.css   | styles                      |  80.50 kB |                 6.96 kB
+polyfills-FFHMD2TL.js | polyfills                   |  33.71 kB |                11.02 kB
+main-XNUKFWO7.js      | main                        |   8.76 kB |                 2.82 kB
+chunk-SOINRMKH.js     | -                           |   5.68 kB |                 1.60 kB
+
+                      | Initial total               | 315.28 kB |                74.05 kB
+
+Lazy chunk files      | Names                       |  Raw size | Estimated transfer size
+chunk-VBOZER6R.js     | browser                     |  65.77 kB |                17.10 kB
+chunk-G5VRW6Y3.js     | patient-routes              | 636 bytes |               636 bytes
+chunk-CRKQEE4Y.js     | staff-routes                | 628 bytes |               628 bytes
+chunk-F4GMWQHD.js     | admin-routes                | 628 bytes |               628 bytes
+chunk-S6DTPEBQ.js     | patient-dashboard-component | 466 bytes |               466 bytes
+chunk-CHUIB7N4.js     | admin-dashboard-component   | 456 bytes |               456 bytes
+chunk-LDDFBDXG.js     | staff-dashboard-component   | 452 bytes |               452 bytes
+
+Output location: d:\PropelIQ-Team\src\frontend\dist\health-platform-frontend
+
+Application bundle generation complete. [9.241 seconds]
+
+=== DONE ===
